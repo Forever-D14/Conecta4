@@ -13,8 +13,8 @@ var colorGato   = "black";
 var colorCanvas = "black";
 
 // Renglones y columnas
-var COLUMNAS    = 6;
-var RENGLONES   = 7;
+var COLUMNAS    = 3;
+var RENGLONES   = 3;
 
 var fichas_X    = 0;
 var fichas_O    = 0;
