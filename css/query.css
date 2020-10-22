@@ -1,0 +1,45 @@
+#query{    
+    background-color:#35435C;
+    text-align:center;
+    color:#fff;
+    width: 300px;
+}
+
+@media screen and (max-width: 600px) {
+    #query:after{
+        content: " max-widqueryth: 600px";
+    }
+    #espada1,#escudo1 {
+        display: none;
+    }
+    #espada2,#escudo2 {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 601px) and (max-width: 1199px) {
+    #query:after{
+        content: " min-width: 601px & max-width: 1199px";
+    }
+    #query{
+        width: 500px;
+    }
+    #espada1,#escudo1 {
+        display: none;
+    }
+    #espada3,#escudo3{
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    #query:after{
+        content: " min-width: 1200px";
+    }
+    #espada2,#escudo2 {
+        display: none;
+    }
+    #espada3,#escudo3{
+        display: none;
+    }
+}
