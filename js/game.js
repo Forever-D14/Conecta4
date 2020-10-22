@@ -5,16 +5,16 @@ var fichas_array;
 var TABLERO_NAME = "conecta4Tablero"; // ID del canvas
 
 // Anchos del tablero
-var ancho       = 800;
-var alto        = 480;
+var ancho       = 1200;
+var alto        = 1180;
 
 // Color del canvas
 var colorGato   = "black";
 var colorCanvas = "black";
 
 // Renglones y columnas
-var COLUMNAS    = 3;
-var RENGLONES   = 3;
+var COLUMNAS    = 6;
+var RENGLONES   = 7;
 
 var fichas_X    = 0;
 var fichas_O    = 0;
