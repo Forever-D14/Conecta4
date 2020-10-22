@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang = "es">
+	<head>
+		<meta charset = "utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Home - Conecta 4</title>
+		<meta name="description" content="Home de ConectaPUNTOS">
+		<link rel="shortcut icon" href="img/number4.png">
+		<link href="https://fonts.googleapis.com/css2?family=Shojumaru&display=swap" rel="stylesheet"> 
+		<link rel="stylesheet" href="css/homeStyles.css"/>
+	</head>
+	<body>
+		<header>
+			<img src="img/number4.png" id="img1"> 
+			<label id = "conecta">CONECTA 4</label>
+			<img src="img/number4.png" id="img2"> 
+		</header>
+		<section>
+			<form>
+				<div class="J">
+					<label for="nombre1">JUGADOR 1: </label>
+					<input id="nombre1" class="nombre" name="player1" type="text" placeholder="Jugador1">
+					<input id="color1" class="primary_color" type="color" name="player1Color" value ="#FF0000">
+					<div id="profileColor1" class="profileColor"></div>
+					
+				</div>
+				<div class="J">
+					<label for="nombre2">JUGADOR 2: </label>
+					<input id="nombre2" class="nombre" name="player2" type="text" placeholder="Jugador2">
+					<input id="color2" class="primary_color" type="color" name="player2Color" value = "#2157a3">
+					<div id="profileColor2" class="profileColor"></div>
+
+				</div>	
+				<div>
+					<button id="bLimpiar" class="botones">Limpiar</button>
+					<button id="bJugar" class="botones">Jugar</button>
+				</div>
+			</form>
+		</section>
+		<script type = "text/javascript" src="js/Home.js"></script>
+	</body>
+</html>

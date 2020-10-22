@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Estilos-->
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/query.css">
+
+    <!-- Scrips -->
+    <script src="js/game.js"></script>
+
+    <title>Conecta 4</title>
+</head>
+
+<body>
+    <main>
+        <!-- Seccion Score -->
+        <section id="score">
+            <table>
+                <tr>
+                    <td><label for="" id="labelJ1">Jugador1 </label></td>
+                    <td><label for=""> score: </label></td>
+                    <td><label for="" id="ScoreJ1">0000</label></td>
+                    <td>//</td>
+                    <td><label for="" > Turno: </label></td>
+                    <td><label for="" id="turn"> --- </label></td>
+                    <td>//</td>
+                    <td><label for="" id="labelJ2">Jugador2</label></td>
+                    <td><label for=""> score: </label></td>
+                    <td><label for="" id="ScoreJ2">0000</label></td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Area de juego -->
+        <section id="area">
+            <!-- Jugador 1 -->
+            <article id="p1">
+                <form action="">
+                    <label for="" >Jugador 1</label>
+                    <br>
+                    <input type="text" name="" id="J1name" placeholder="Jugador1">
+                    <br>
+                    <br>
+                    <input type="radio" name="J1Selector" id="J1Selector" value="red"><label for="">Azul</label>
+                    <br>
+                    <input type="radio" name="J1Selector" id="" value="blue"><label for="">Rojo</label>
+                    <br>
+                    <br>
+                    <input type="button" class="bt" value="Ingresar">
+                    <br>
+                    <br>
+                </form>
+            </article>
+            
+            <!-- Tablero -->
+            <article id="tablero">           
+                    <canvas id="conecta4Tablero" >conecta4</canvas>
+            </article>
+
+            <!-- Jugador 2 -->
+            <article id="p2">
+                <form action="">
+                    <label for="">Jugador 2</label>
+                    <br>
+                    <input type="text" name="" id="J2name" placeholder="Jugador2">
+                    <br>
+                    <br>
+                    <input type="radio" name="J2Selector" id="" value="red"><label for="">Rojo</label>
+                    <br>
+                    <input type="radio" name="J2Selector" id="" value="blue"><label for="">Azul</label>
+                    <br>
+                    <br>
+                    <input type="button" class="bt" value="Ingresar">
+                    <br>
+                    <br>
+                    </form>
+            </article>
+        </section>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <!-- Botones -->
+        <section id="btns">
+            <input type="button" class="bt" id="btnIniciar" value="Jugar" onclick="iniciar()">
+            <input type="button" class="bt" id="btnRestart"value="Reiniciar">
+        </section>
+        <!-- <footer id="pie"></footer> -->
+    </main>
+
+</body>
+</html>
+
