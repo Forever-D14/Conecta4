@@ -35,26 +35,28 @@ var fichas_array;
 var conectaMatrix ;
 
 // Constantes de la matriz
-const SIZE_MATRIX_X = columnas;
-const SIZE_MATRIX_Y = filas;
-const TOTAL_SIZE    = SIZE_MATRIX_X * SIZE_MATRIX_Y;
-const SIZE_FICHA    = 30;
+const SIZE_MATRIX_X     = columnas;
+const SIZE_MATRIX_Y     = filas;
+const SIZE_FICHA_width  = xDif;
+const SIZE_FICHA_height = yDif;
 
-// Fichas
-var fichas_X    = 0;
-var fichas_O    = 0;
-
-var tiradas, gameOver;
+/* turn */
+var turn    = true; // Turno
 
 /**
  * Funcion que inicia todo 
  */
 function iniciar(){
+    fichas_array = [];
+
     // Pinta el tablero
     pintaTablero();
 
     // Inicializa la matriz
     iniciaMatriz();
+
+    // se añade el evento eleccionar para dibujar
+    canvas.addEventListener("click",selecciona,false);
     return false;
 }
 
@@ -99,21 +101,16 @@ function pintaTablero(){
  * Constructor de Ficha
  * @param {*} x Posicion X
  * @param {*} y Posicion Y
- * @param {*} w width
- * @param {*} h height
  * @param {*} i indice
  * @param {*} ren renglon
  * @param {*} col Columna
  */
-function Ficha(x,y,w,h,i,ren,col){
+function Ficha(x,y,i,ren,col){
     this.x = x;
     this.y = y;
-    this.w = w;
-    this.h = h;
     this.i = i;
     this.ren = ren;
     this.col = col;
-    this.peso = 0;
     this.valor = "";
     this.pinta = pintaFicha;
 }
@@ -123,29 +120,38 @@ function Ficha(x,y,w,h,i,ren,col){
  * pintaFicha ("o");
  * @param {*} valor String
  */
-function pintaFicha(valor){
-    this.valor = valor;
-    ctx.font = "bold 100px Arial";
-    ctx.fillStyle = colorGato;
-    ctx.fillText(valor,this.x+30,this.y+100,this.w,this.h);
+function pintaFicha(valor, color){
+    this.valor      = valor;
+    ctx.font        = "bold 30px Arial";
+    ctx.fillStyle   = color;
+    ctx.fillText(valor,this.x,this.y);
 }
 
 /**
  * Funcion que inicia la matriz del juego
  */
 function iniciaMatriz(){
+    let index = 0;
+    let ren = 0;
+    let col = 0;
+
+    let cx = xDif/2; // centro de las x
+    let cy = yDif/2; // Centro de las y
+
 	// Se crea la matriz
-    for(let i=0; i<TOTAL_SIZE; i++) {
-        for(let i=0; i<SIZE_MATRIX_X; i++){
-            for(let j=0; j<SIZE_MATRIX_Y; j++){
-                fichas_array.push(new Ficha(200, 20,SIZE_FICHA,SIZE_FICHA,i,0,0));
-            }
+    for(let i=2; i<ancho; i+=xDif){
+        for(let j=2; j<alto; j+=yDif){
+            fichas_array.push(new Ficha(i+cx, j+cy,index,ren,col));
+            //console.log("ficha "+(index+1)+" X = "+(i+cx)+" Y = "+(j+cy));
+            //(new Ficha(i+cx, j+cy,index,ren,col)).pinta("O");
+            index ++;
+            col++;
         }
-        
+        col = 0;
+        ren++;
     }
     return true;
 }
-
 
 /**
  * Convierte las coordenadas relativas del canvas al tablero
@@ -165,77 +171,42 @@ function ajusta(xx,yy){
  */
 function selecciona(e){
     canvas.removeEventListener("click",selecciona,false);
+
     var pos = ajusta(e.clientX, e.clientY);
-    var x = pos.x;
-    var y = pos.y;
+    var x   = pos.x;
+    var y   = pos.y;
+    console.log("Clic X ="+x+" Y ="+y);
+    let cx = xDif/2; // centro de las x
+    let cy = yDif/2; // Centro de las y
     var ficha;
+
+    // Para Cada Ficha
     for(var i=0; i<fichas_array.length; i++){
         ficha = fichas_array[i];
-        if( (x>ficha.x) && (x<ficha.x+ficha.w) && (y>ficha.y) && (y<ficha.y+ficha.h) ){
+        // Si se encuentra dentro del rango permitido
+        if( (x>=ficha.x) && (x<ficha.x+cx) && (y>=ficha.y) && (y<ficha.y+cy) ){
             if(ficha.valor == ""){
-                tiradas++;
                 break;
             }
         }
     }
+
+    // Si existe la ficha
     if(i<fichas_array.length){
+        // si la ficha no a sido utilizada
         if(ficha.valor == ""){
-            ficha.pinta("X");
-            verifica(false);
-            if(!gameOver){
-                console.log("String String puto");
+            // turno true jugador 1
+            if (turn) {
+                turn = false;
+                ficha.pinta("O","blue");
+            }else{// turno false jugador 2
+                turn = true;
+                ficha.pinta("X","black");
             }
         }
-    }else{
-        canvas.addEventListener("click",selecciona,false);
-    }
-}
-
-function ObtenerCoords(event){
-    var x = new Number();
-    var y = new Number();
-
-    if (event.x != undefined && event.y != undefined){
-        x = event.x;
-        y = event.y;
-    }else{// Firefox
-        x = event.clientX + document.body.scrollLeft +
-        document.documentElement.scrollLeft;
-        y = event.clientY + document.body.scrollTop +
-        document.documentElement.scrollTop;
     }
 
-    x -= canvas.offsetLeft;
-    y -= canvas.offsetTop;
-    return {
-        x,y
-    }
-}
-
-tamC=1;
-
-function tache(){
-    ctx.beginPath();
-    ctx.moveTo(px, py);
-    ctx.lineTo(px+100,py+100);
-    ctx.stroke();
-}
-
-function circulo(){
-    ctx.beginPath();
-    ctx.arc((px*tamC)+(tamC*.5),(py*tamC)+(tamC*.5),tamC*.4,0,2*Math.PI);
-    ctx.stroke();
-}
-            
-
-function posicion(){
-    var pos = ObtenerCoords(event);
-    pos.x -= 350;
-    pos.y -= 150;
-    px = Math.trunc(pos.x/tamC);
-    py = Math.trunc(pos.y/tamC);
-    tache();
-    circulo();
+    canvas.addEventListener("click",selecciona,false);
 }
 
 iniciar();
