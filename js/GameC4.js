@@ -209,4 +209,19 @@ function selecciona(e){
     canvas.addEventListener("click",selecciona,false);
 }
 
+/**
+ * Busca la ficha y la retorna 
+ * @param {*} ren Renglon
+ * @param {*} col Columna
+ */
+function buscarFicha(ren,col){
+    for(var i=0; i<fichas_array.length; i++){
+        ficha = fichas_array[i];
+        if(ficha.ren == ren && ficha.col == col){
+            break;
+        }
+    }
+    return ficha;
+}
+
 iniciar();
