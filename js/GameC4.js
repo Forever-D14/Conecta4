@@ -48,15 +48,6 @@ var tiradas, gameOver;
  * Funcion que inicia todo 
  */
 function iniciar(){
-    // Optiene el canvas
-    canvas        = document.getElementById(TABLERO_NAME);
-
-    // Pone ancho y alto del canvas
-    canvas.width  = ancho;
-    canvas.height = alto;
-
-    ctx = canvas.getContext("2d");
-
     // Pinta el tablero
     pintaTablero();
 
@@ -69,8 +60,20 @@ function iniciar(){
  * Funcion encargada de pintar el tablero
  */
 function pintaTablero(){
+    // Optiene el canvas
+    canvas        = document.getElementById(TABLERO_NAME);
+
+    // Pone ancho y alto del canvas
+    canvas.width  = ancho;
+    canvas.height = alto;
+
+    ctx = canvas.getContext("2d");
+
+    // Estilos de color
     ctx.fillStyle   = colorCanvas;
     ctx.strokeStyle = colorGato;
+
+    // Grueso de linea
     ctx.lineWidth   = 5;
 
     // Dibuja las lineas verticales
