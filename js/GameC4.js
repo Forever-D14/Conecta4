@@ -42,12 +42,13 @@ const SIZE_FICHA_height = yDif;
 
 /* turn */
 var turn    = true; // Turno
-
+var fichas_MATRIX = [];
 /**
  * Funcion que inicia todo 
  */
 function iniciar(){
-    fichas_array = [];
+    
+    for(let i=0;i<8;i++) fichas_MATRIX[i]=new Array(8);
 
     // Pinta el tablero
     pintaTablero();
@@ -122,9 +123,9 @@ function Ficha(x,y,i,ren,col){
  */
 function pintaFicha(valor, color){
     this.valor      = valor;
-    ctx.font        = "bold 30px Arial";
+    ctx.font        = "bold 50px Shojumaru";
     ctx.fillStyle   = color;
-    ctx.fillText(valor,this.x,this.y);
+    ctx.fillText(valor,this.x+15,this.y+45);
 }
 
 /**
@@ -135,20 +136,23 @@ function iniciaMatriz(){
     let ren = 0;
     let col = 0;
 
-    let cx = xDif/2; // centro de las x
-    let cy = yDif/2; // Centro de las y
+    let cx = 0; // centro de las x
+    let cy = 0; // Centro de las y
 
 	// Se crea la matriz
-    for(let i=2; i<ancho; i+=xDif){
-        for(let j=2; j<alto; j+=yDif){
-            fichas_array.push(new Ficha(i+cx, j+cy,index,ren,col));
+    for(let i=2; i<ancho; i+=xDif+1){
+        for(let j=2; j<alto; j+=yDif+1){
+            fichas_MATRIX[ren][col]=new Ficha(i+cx, j+cy,index,col,ren);
             //console.log("ficha "+(index+1)+" X = "+(i+cx)+" Y = "+(j+cy));
             //(new Ficha(i+cx, j+cy,index,ren,col)).pinta("O");
             index ++;
             col++;
+                
         }
         col = 0;
+
         ren++;
+        
     }
     return true;
 }
@@ -175,33 +179,31 @@ function selecciona(e){
     var pos = ajusta(e.clientX, e.clientY);
     var x   = pos.x;
     var y   = pos.y;
-    console.log("Clic X ="+x+" Y ="+y);
-    let cx = xDif/2; // centro de las x
-    let cy = yDif/2; // Centro de las y
+    console.log("Clic X = "+x+" Y = "+y);
+    let cx = xDif; // centro de las x
+    let cy = yDif; // Centro de las y
     var ficha;
 
     // Para Cada Ficha
-    for(var i=0; i<fichas_array.length; i++){
-        ficha = fichas_array[i];
-        // Si se encuentra dentro del rango permitido
-        if( (x>=ficha.x) && (x<ficha.x+cx) && (y>=ficha.y) && (y<ficha.y+cy) ){
-            if(ficha.valor == ""){
-                break;
-            }
-        }
-    }
-
-    // Si existe la ficha
-    if(i<fichas_array.length){
-        // si la ficha no a sido utilizada
-        if(ficha.valor == ""){
-            // turno true jugador 1
-            if (turn) {
-                turn = false;
-                ficha.pinta("O","blue");
-            }else{// turno false jugador 2
-                turn = true;
-                ficha.pinta("X","black");
+    for(var i=0; i<fichas_MATRIX.length; i++){
+        for(var j=0; j<fichas_MATRIX[i].length; j++){
+            ficha = fichas_MATRIX[i][j];
+            // Si se encuentra dentro del rango permitido
+            if( (x>=ficha.x) && (x<ficha.x+cx) && (y>=ficha.y) && (y<ficha.y+cy) ){
+                 if(ficha.valor == ""){
+                    if (turn) {
+                        turn = false;
+                        ficha.pinta("O","blue");
+                        console.log(ficha.ren + "," + ficha.col)
+                        break;
+                    }else{// turno false jugador 2
+                        turn = true;
+                        ficha.pinta("X","black");
+                        console.log(ficha.ren + "," + ficha.col)
+                        break;
+                    }
+                    
+                }
             }
         }
     }
