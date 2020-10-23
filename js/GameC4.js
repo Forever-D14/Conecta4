@@ -1,7 +1,6 @@
 /**
  * Variables de configuracion
  */
-
 // Canvas
 var ctx, canvas;
 
@@ -14,15 +13,6 @@ var conectaMatrix = [];
 // Nombre del Canvas
 var TABLERO_NAME = "conecta4Tablero";
 
-// Tamaño del Canvas
-var ancho       = 640;
-var alto        = 480;
-
-
-// Finlas y columnas del canvas
-var columnas = 8;
-var filas = 8;
-
 // Color 
 var colorGato   = "black";
 var colorCanvas = "black";
@@ -32,8 +22,17 @@ var fichas_O    = 0;
 
 var largo       = 120;
 
-var xDif = 79.4;
-var yDif = 59.4;
+// Tamaño del Canvas
+var ancho       = 640;
+var alto        = 480;
+
+// Finlas y columnas del canvas
+var columnas = 6;
+var filas = 5;
+
+// Variable que controla cada cuando se pinta una ralla
+var xDif = (ancho/columnas)-0.6; // 79.4;
+var yDif = (alto/filas)-0.6; // 59.4;
 
 /**
  * Funcion que inicia todo 
@@ -44,36 +43,46 @@ function iniciar(){
         conectaMatrix[i] = new Array(8);
     }
 
+    // Optiene el canvas
     canvas        = document.getElementById(TABLERO_NAME);
+
+    // Pone ancho y alto del canvas
     canvas.width  = ancho;
     canvas.height = alto;
 
     ctx = canvas.getContext("2d");
-    tableo();
+
+    // Pinta el tablero
+    pintaTablero();
+
+    // Inicializa la matriz
+    inicializaMatrix();
     return false;
 }
 
-function tableo(){
+/**
+ * Funcion encargada de pintar el tablero
+ */
+function pintaTablero(){
     ctx.fillStyle   = colorCanvas;
     ctx.strokeStyle = colorGato;
     ctx.lineWidth   = 5;
 
-    /* Dibujar el # */
+    // Dibuja las lineas verticales
     for(let distanceX=2; distanceX<=ancho; distanceX+=xDif){
     	ctx.beginPath();
 	    ctx.moveTo(distanceX,0);
     	ctx.lineTo(distanceX,alto);
-    	ctx.stroke();
+        ctx.stroke();
     }
 
-    for(let distanceY=2; distanceY<=alto; distanceY+=yDif){
+    // Dibuja lineas horizontales
+    for(let distanceY=2; distanceY<=alto ; distanceY+=yDif){
     	ctx.beginPath();
 	    ctx.moveTo(0,distanceY);
     	ctx.lineTo(ancho,distanceY);
     	ctx.stroke();
     }
-
-    inicializaMatrix();
 }
 
 function inicializaMatrix(){
