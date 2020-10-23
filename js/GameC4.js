@@ -1,14 +1,29 @@
+/**
+ * Variables de configuracion
+ */
+
+// Canvas
 var ctx, canvas;
+
 var tiradas, gameOver;
+
+// Arreglos del juego
 var fichas_array;
+var conectaMatrix = [];
+
+// Nombre del Canvas
 var TABLERO_NAME = "conecta4Tablero";
 
+// Tamaño del Canvas
 var ancho       = 640;
 var alto        = 480;
 
-var columnas=8;
-var filas=8;
 
+// Finlas y columnas del canvas
+var columnas = 8;
+var filas = 8;
+
+// Color 
 var colorGato   = "black";
 var colorCanvas = "black";
 
@@ -17,42 +32,41 @@ var fichas_O    = 0;
 
 var largo       = 120;
 
-var conectaMatrix = [];
-
 var xDif = 79.4;
 var yDif = 59.4;
 
-
+/**
+ * Funcion que inicia todo 
+ */
 function iniciar(){
-
-for(let i=0; i<8; i++) {
-    	conectaMatrix[i] = new Array(8);
-	}
-
+    // Se crea la matriz
+    for(let i=0; i<8; i++) {
+        conectaMatrix[i] = new Array(8);
+    }
 
     canvas        = document.getElementById(TABLERO_NAME);
     canvas.width  = ancho;
     canvas.height = alto;
 
     ctx = canvas.getContext("2d");
-    gato();
+    tableo();
     return false;
 }
 
-function gato(){
+function tableo(){
     ctx.fillStyle   = colorCanvas;
     ctx.strokeStyle = colorGato;
     ctx.lineWidth   = 5;
 
     /* Dibujar el # */
-    for(let distanceX=2;distanceX<=ancho;distanceX+=xDif){
+    for(let distanceX=2; distanceX<=ancho; distanceX+=xDif){
     	ctx.beginPath();
 	    ctx.moveTo(distanceX,0);
     	ctx.lineTo(distanceX,alto);
     	ctx.stroke();
     }
 
-    for(let distanceY=2;distanceY<=alto;distanceY+=yDif){
+    for(let distanceY=2; distanceY<=alto; distanceY+=yDif){
     	ctx.beginPath();
 	    ctx.moveTo(0,distanceY);
     	ctx.lineTo(ancho,distanceY);

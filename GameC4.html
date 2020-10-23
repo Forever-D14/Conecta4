@@ -5,6 +5,8 @@
         <title>Game - Conecta 4</title>
         <meta name="description" content="Desarrollo del juego ConectaPuntos">
         <link rel="shortcut icon" href="img/number4.png">
+
+        <!-- Estilos-->
         <link href="https://fonts.googleapis.com/css2?family=Shojumaru&display=swap" rel="stylesheet"> 
         <link rel="stylesheet" href="css/gameStyles.css"/>
     </head>
@@ -37,6 +39,7 @@
                 </div>
                 <div id="profileColor1" class="profileColor"></div>
             </section>
+
             <!--JUGADOR 2-->
             <section class="Jugador" id="J2">
                 <div class="Puntuacion">
@@ -53,15 +56,18 @@
                 </div>
                 <div id="profileColor2" class="profileColor"></div>
             </section>
+
             <!-- TABLERO -->
             <section id="Tablero">
                     <canvas id="conecta4Tablero" onmousedown="posicion()">conecta4</canvas>
             </section>
         </section>
+
         <section id="botones">
             <button id="bReiniciar" class="buttons">Reiniciar Puntuacion</button>
             <button id="bHome" class="buttons">Home</button>
         </section>
+        <!-- Scrips -->
         <script type = "text/javascript" src="js/GameC4.js"></script>
     </body>
 </html>
