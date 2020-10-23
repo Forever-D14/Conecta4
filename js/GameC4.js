@@ -32,11 +32,13 @@ var yDif = (alto/filas)-0.6; // 59.4;
  */
 // Arreglos del juego
 var fichas_array;
-var conectaMatrix = [];
+var conectaMatrix ;
 
 // Constantes de la matriz
 const SIZE_MATRIX_X = columnas;
 const SIZE_MATRIX_Y = filas;
+const TOTAL_SIZE    = SIZE_MATRIX_X * SIZE_MATRIX_Y;
+const SIZE_FICHA    = 30;
 
 // Fichas
 var fichas_X    = 0;
@@ -52,7 +54,7 @@ function iniciar(){
     pintaTablero();
 
     // Inicializa la matriz
-    inicializaMatrix();
+    iniciaMatriz();
     return false;
 }
 
@@ -93,27 +95,105 @@ function pintaTablero(){
     }
 }
 
-function inicializaMatrix(){
-	let movX = 0;
-	let movY = 0;
-	// Se crea la matriz
-    for(let i=0; i<SIZE_MATRIX_X; i++) {
-        conectaMatrix[i] = new Array(SIZE_MATRIX_Y);
-    }
+/**
+ * Constructor de Ficha
+ * @param {*} x Posicion X
+ * @param {*} y Posicion Y
+ * @param {*} w width
+ * @param {*} h height
+ * @param {*} i indice
+ * @param {*} ren renglon
+ * @param {*} col Columna
+ */
+function Ficha(x,y,w,h,i,ren,col){
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.i = i;
+    this.ren = ren;
+    this.col = col;
+    this.peso = 0;
+    this.valor = "";
+    this.pinta = pintaFicha;
+}
 
-    // llena la matriz en 0s
-	for(let i=0; i<SIZE_MATRIX_X; i++){
-    	for(let j=0; j<SIZE_MATRIX_Y; j++){
-    		conectaMatrix[i][j] = 0;
-    	}
+/**
+ * Pinta una Ficha dado un valor String
+ * pintaFicha ("o");
+ * @param {*} valor String
+ */
+function pintaFicha(valor){
+    this.valor = valor;
+    ctx.font = "bold 100px Arial";
+    ctx.fillStyle = colorGato;
+    ctx.fillText(valor,this.x+30,this.y+100,this.w,this.h);
+}
+
+/**
+ * Funcion que inicia la matriz del juego
+ */
+function iniciaMatriz(){
+	// Se crea la matriz
+    for(let i=0; i<TOTAL_SIZE; i++) {
+        for(let i=0; i<SIZE_MATRIX_X; i++){
+            for(let j=0; j<SIZE_MATRIX_Y; j++){
+                fichas_array.push(new Ficha(200, 20,SIZE_FICHA,SIZE_FICHA,i,0,0));
+            }
+        }
+        
     }
     return true;
+}
+
+
+/**
+ * Convierte las coordenadas relativas del canvas al tablero
+ * @param {*} xx 
+ * @param {*} yy 
+ */
+function ajusta(xx,yy){
+    var posCanvas = canvas.getBoundingClientRect();
+    var x = xx-posCanvas.left;
+    var y = yy-posCanvas.top;
+    return {x:x,y:y}
+}
+
+/**
+ * Selector en elt ablero
+ * @param {*} e 
+ */
+function selecciona(e){
+    canvas.removeEventListener("click",selecciona,false);
+    var pos = ajusta(e.clientX, e.clientY);
+    var x = pos.x;
+    var y = pos.y;
+    var ficha;
+    for(var i=0; i<fichas_array.length; i++){
+        ficha = fichas_array[i];
+        if( (x>ficha.x) && (x<ficha.x+ficha.w) && (y>ficha.y) && (y<ficha.y+ficha.h) ){
+            if(ficha.valor == ""){
+                tiradas++;
+                break;
+            }
+        }
+    }
+    if(i<fichas_array.length){
+        if(ficha.valor == ""){
+            ficha.pinta("X");
+            verifica(false);
+            if(!gameOver){
+                console.log("String String puto");
+            }
+        }
+    }else{
+        canvas.addEventListener("click",selecciona,false);
+    }
 }
 
 function ObtenerCoords(event){
     var x = new Number();
     var y = new Number();
-    //     var canvas = document.getElementById("canvas_1");
 
     if (event.x != undefined && event.y != undefined){
         x = event.x;
@@ -130,7 +210,6 @@ function ObtenerCoords(event){
     return {
         x,y
     }
-
 }
 
 tamC=1;
@@ -150,9 +229,9 @@ function circulo(){
             
 
 function posicion(){
-    var pos=ObtenerCoords(event);
-    pos.x-=350;
-    pos.y-=150;
+    var pos = ObtenerCoords(event);
+    pos.x -= 350;
+    pos.y -= 150;
     px = Math.trunc(pos.x/tamC);
     py = Math.trunc(pos.y/tamC);
     tache();

@@ -100,10 +100,10 @@ function gato(){
  * @param {*} col 
  */
 function Ficha(x,y,w,h,i,ren,col){
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
+    this.x = x; // posicion X
+    this.y = y; // posicion U
+    this.w = w; // largo
+    this.h = h; // Ancho
     this.i = i;
     this.ren = ren;
     this.col = col;
