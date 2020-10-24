@@ -30,15 +30,14 @@ var cJ1,cJ2;//Color
 var tJ1,tJ2;//Turno
 var sJ1,sJ2;//Score
 var nJ1,nJ2;//Nombre
-var profileColors//Colores del perfil
+var profileColors;//Colores del perfil
 /**
  * 
  * Configuracion del Juego
  * 
  */
 // Arreglos del juego
-var fichas_array;
-var conectaMatrix ;
+var fichas_Matrix = [];
 
 // Constantes de la matriz
 const SIZE_MATRIX_X     = columnas;
@@ -48,13 +47,22 @@ const SIZE_FICHA_height = yDif;
 
 /* turn */
 var turn    = true; // Turno
-var fichas_MATRIX = [];
+
 /**
  * Funcion que inicia todo 
  */
 function iniciar(){
-    
-    for(let i=0;i<8;i++) fichas_MATRIX[i]=new Array(8);
+    let size;
+    if (columnas > filas) {
+        size = columnas;
+    }else{
+        size = filas;
+    }
+
+    /// Se crea la matriz de fichas
+    for(let i=0; i<size ; i++){
+        fichas_Matrix[i] = new Array(size);
+    }
 
     // Pinta el tablero
     pintaTablero();
@@ -150,8 +158,8 @@ function iniciaMatriz(){
 	// Se crea la matriz
     for(let i=2; i<ancho; i+=xDif+1){
         for(let j=2; j<alto; j+=yDif+1){
-            fichas_MATRIX[col][ren]=new Ficha(i+cx, j+cy,index,col,ren);//Aqui lo cambie las variables por que de alguna manera,
-            index ++;                                                   //Generaba la matriz de lado xd 
+            fichas_Matrix[col][ren] = new Ficha(i+cx, j+cy,index,col,ren);
+            index ++;                                         
             col++;
         }
         col = 0;
@@ -174,7 +182,6 @@ function ajusta(xx,yy){
  * @param {*} e 
  */
 function selecciona(e){
-
     canvas.removeEventListener("click",selecciona,false);
     
     var pos = ajusta(e.clientX, e.clientY);
@@ -186,9 +193,9 @@ function selecciona(e){
     var ficha;
 
     // Para Cada Ficha
-    for(var i=0; i<fichas_MATRIX.length; i++){
-        for(var j=0; j<fichas_MATRIX[i].length; j++){
-            ficha = fichas_MATRIX[i][j];
+    for(var i=0; i<fichas_Matrix.length; i++){
+        for(var j=0; j<fichas_Matrix[i].length; j++){
+            ficha = fichas_Matrix[i][j];
             // Si se encuentra dentro del rango permitido
             if( (x>=ficha.x) && (x<ficha.x+cx) && (y>=ficha.y) && (y<ficha.y+cy) ){
                  if(ficha.valor == ""){
@@ -206,7 +213,6 @@ function selecciona(e){
                         gameCheck(ficha);
                         break;
                     }
-                    
                 }
             }
         }
@@ -216,23 +222,19 @@ function selecciona(e){
 }
 
 //ESTAS PASANDOLE LA QUE PRESIONAS
-
-
 function columnCheck(fichaPress){
-    
-    if (fichaPress.ren==7){
+    if (fichaPress.ren == 7){
         fichaPress.pinta("O",xColor);
-        fichaPress.color=xColor;
+        fichaPress.color = xColor;
     }else{
-        let fichaAbajo = fichas_MATRIX[fichaPress.ren+1][fichaPress.col];
-        if(fichaAbajo.valor!=""){
-                fichaPress.pinta("O",xColor);
-                fichaPress.color = xColor;
-            }else{
-                columnCheck(fichaAbajo);
-            }
-
+        let fichaAbajo = fichas_Matrix[fichaPress.ren+1][fichaPress.col];
+        if(fichaAbajo.valor != ""){
+            fichaPress.pinta("O",xColor);
+            fichaPress.color = xColor;
+        }else{
+            columnCheck(fichaAbajo);
         }
+    }
 }
 
 function gameCheck(fichaPress){
@@ -244,14 +246,14 @@ function gameCheck(fichaPress){
     let j = fichaPress.col+3;
     if(j>=columnas)j=columnas-1;
     while(i<j && !ganador){
-        if(fichas_MATRIX[fichaPress.ren][i].color==xColor && fichas_MATRIX[fichaPress.ren][i].color!="black"){
+        if(fichas_Matrix[fichaPress.ren][i].color==xColor && fichas_Matrix[fichaPress.ren][i].color!="black"){
             cont++;
             console.log("Si");
-             console.log(fichas_MATRIX[fichaPress.ren][i].color + "" + xColor +" SI" + fichaPress.color);
+            console.log(fichas_Matrix[fichaPress.ren][i].color + "" + xColor +" SI" + fichaPress.color);
         }
         else{
             cont=0;
-            console.log(fichas_MATRIX[fichaPress.ren][i].color + "" + xColor +" NO" + fichaPress.color);
+            console.log(fichas_Matrix[fichaPress.ren][i].color + "" + xColor +" NO" + fichaPress.color);
         }
         if (cont>=4){
             ganador=1;
@@ -260,33 +262,35 @@ function gameCheck(fichaPress){
         i++;
     }
     return ganador;
-
-
 }
 
 function changeProfileElements(){
-    cJ1=document.getElementById("colorJ1")//Obtenemos ColorPickers
-    cJ2=document.getElementById("colorJ2")  
+    // Obtenemos ColorPickers
+    // De Cada Jugador
+    cJ1 = document.getElementById("colorJ1")
+    cJ2 = document.getElementById("colorJ2")
 
-    tJ1=document.getElementById("tJ1");//Obtenemos las labels para saber a quien le toca
-    tJ2=document.getElementById("tJ2");
+    //Obtenemos las labels para saber a quien le toca
+    tJ1 = document.getElementById("tJ1");
+    tJ2 = document.getElementById("tJ2");
 
-    sJ1=document.getElementById("PJ1");//Obtenemos las labels de las puntaciones
-    sJ2=document.getElementById("PJ2");
+    //Obtenemos las labels de las puntaciones
+    sJ1 = document.getElementById("PJ1");
+    sJ2 = document.getElementById("PJ2");
 
-    nJ1=document.getElementById("nJ1");
-    nJ2=document.getElementById("nJ2");
+    nJ1 = document.getElementById("nJ1");
+    nJ2 = document.getElementById("nJ2");
 
-    profileColors=document.getElementsByClassName("profileColor")
+    profileColors = document.getElementsByClassName("profileColor")
 
-    nJ1.innerHTML=localStorage.getItem("nJ1");//Asignamos nombres
-    nJ2.innerHTML=localStorage.getItem("nJ2");
+    nJ1.innerHTML = localStorage.getItem("nJ1");//Asignamos nombres
+    nJ2.innerHTML = localStorage.getItem("nJ2");
     
-    cJ1.value=localStorage.getItem("cJ1");
-    cJ2.value=localStorage.getItem("cJ2");
+    cJ1.value = localStorage.getItem("cJ1");
+    cJ2.value = localStorage.getItem("cJ2");
     
-    cJ1.style.visibility="hidden";
-    cJ2.style.visibility="hidden";
+    cJ1.style.visibility = "hidden";
+    cJ2.style.visibility = "hidden";
     
     profileColors[0].classList.add("conectaCircleProfile");
     profileColors[0].style.color=cJ1.value;
