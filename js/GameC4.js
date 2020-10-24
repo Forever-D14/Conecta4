@@ -238,13 +238,19 @@ function columnCheck(fichaPress){
 }
 
 function gameCheck(fichaPress){
-    let ganador=0;
-    let cont=0;
+    let ganador = 0;
+    let cont = 0;
     //horizontal
     let i = fichaPress.col-3;
-    if(i<0)i=0;
+    if(i < 0){
+        i=0;
+    }
+
     let j = fichaPress.col+3;
-    if(j>=columnas)j=columnas-1;
+    if(j >= columnas){
+        j = columnas-1;
+    }
+    
     while(i<j && !ganador){
         if(fichas_Matrix[fichaPress.ren][i].color==xColor && fichas_Matrix[fichaPress.ren][i].color!="black"){
             cont++;
