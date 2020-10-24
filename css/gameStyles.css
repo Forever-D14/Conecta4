@@ -149,7 +149,7 @@ button{
 
 
 
-.catCircleProfile{
+.conectaCircleProfile{
 	position: absolute;
 	width: 55px;
 	height: 55px;
@@ -163,23 +163,3 @@ button{
 
 
 
-.catCrossProfile{
-	background: currentColor;
-	color: blue;
-    height:55px;
-    position: absolute;
-    width: 20px;
-
-}
-
-.catCrossProfile:after {
-    background: currentColor;
-    content: "";
-    height: 20px;
-    left: -16px;
-    position: absolute;
-    top: 18px;
-    width: 55px;
-
-}
-  

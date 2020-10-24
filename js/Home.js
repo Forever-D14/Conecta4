@@ -13,14 +13,14 @@ function limpia(){
 	j1.value="";
 	j2.value="";
 
-	cj1.value="#FF0000";
-	cj2.value="#2157a3";
+	cj1.value=orange;
+	cj2.value=blue;
 
-	pickers[0].style.backgroundColor=red;
-	pickers[1].style.backgroundColor=blue;
+	pickers[0].value=orange;
+	pickers[1].value=blue;
 
-	circles[0].style.backgroundColor=pickers[0].value;
-	circles[1].style.backgroundColor=pickers[1].value;
+	circles[0].style.color=pickers[0].value;
+	circles[1].style.color=pickers[1].value;
 
 	return false;
 }
@@ -42,7 +42,7 @@ function juega(){
 
 
 function main(){
-	let red="#FF8C00";
+	let orange="#D2691E";
 	let blue="#5F9EA0";
 
 	buttons[0].onclick = limpia;
@@ -52,8 +52,10 @@ function main(){
 	pickers[1].style.visibility="hidden";
 
 	circles[0].classList.add("colorPicker");
-	circles[0].style.color=red;
+	circles[0].style.color=orange;
+	pickers[0].value=orange;
 	circles[1].classList.add("colorPicker");
+	pickers[1].value=blue;
 	circles[1].style.color=blue;
 
 	pickers[0].onchange=function(){
