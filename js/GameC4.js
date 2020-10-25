@@ -38,6 +38,8 @@ var profileColors;//Colores del perfil
  */
 // Arreglos del juego
 var fichas_Matrix = [];
+var scoreP1=0;
+var scoreP2=0;
 
 // Constantes de la matriz
 const SIZE_MATRIX_X     = columnas;
@@ -159,6 +161,7 @@ function iniciaMatriz(){
     for(let i=2; i<ancho; i+=xDif+1){
         for(let j=2; j<alto; j+=yDif+1){
             fichas_Matrix[col][ren] = new Ficha(i+cx, j+cy,index,col,ren);
+            fichas_Matrix[col][ren].valor="";
             index ++;                                         
             col++;
         }
@@ -204,13 +207,12 @@ function selecciona(e){
                         xColor=cJ1.value;
                         
                         columnCheck(ficha,cJ1.value);
-                        gameCheck(ficha);
+                        
                         break;
                     }else{// turno false Jugador 2
                         turn = true;
                         xColor=cJ2.value;
                         columnCheck(ficha,cJ2.value);
-                        gameCheck(ficha);
                         break;
                     }
                 }
@@ -226,11 +228,13 @@ function columnCheck(fichaPress){
     if (fichaPress.ren == 7){
         fichaPress.pinta("O",xColor);
         fichaPress.color = xColor;
+        gameCheck(fichaPress);
     }else{
         let fichaAbajo = fichas_Matrix[fichaPress.ren+1][fichaPress.col];
         if(fichaAbajo.valor != ""){
             fichaPress.pinta("O",xColor);
             fichaPress.color = xColor;
+            gameCheck(fichaPress);
         }else{
             columnCheck(fichaAbajo);
         }
@@ -238,32 +242,152 @@ function columnCheck(fichaPress){
 }
 
 function gameCheck(fichaPress){
+    let winner=0;
+   
+    if(horizontalCheck(fichaPress) || verticalCheck(fichaPress) || leftDiagonalCheck(fichaPress) ||rightDiagonalCheck(fichaPress) ){
+        if (turn) {
+            alert("Ha ganado " + localStorage.getItem("nJ2"));
+            limpia();
+            scoreP2++;
+            sJ2.innerHTML=scoreP2;
+        }else{
+            alert("Ha ganado " + localStorage.getItem("nJ1"));
+            limpia();
+            scoreP1++;
+            sJ1.innerHTML=scoreP1;
+        }
+    }    
+}
+
+function limpia(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pintaTablero();
+    iniciaMatriz();
+
+}
+
+function rightDiagonalCheck(fichaT){
+    let ganador = 0;
+    let cont = 0 ;
+    let i=fichaT.ren+3;
+    if (i>=filas) {
+        i=filas-1;
+    }
+    let j=fichaT.col-3;
+    if(j<0){
+        j=0;
+    }
+    let n=fichaT.ren-3;
+    if(n<0){
+        n=0;
+    }
+    let m=fichaT.col+3;
+    if(m>=columnas){
+        m=columnas-1;
+    }
+
+    while(i>=n && j<=m && !ganador){
+
+        if(fichas_Matrix[i][j].color==xColor && fichas_Matrix[i][j].color != "black"){
+            cont++;
+
+        }
+        else{
+            cont=0;
+        }
+        if (cont>=4){
+            ganador=1;
+        }
+        i--;
+        j++;
+    }
+    return ganador;
+
+
+}
+
+function leftDiagonalCheck(fichaT){
+    let ganador = 0;
+    let cont = 0 ;
+    let i=fichaT.ren+3;
+    if (i>=filas) {
+        i=filas-1;
+    }
+    let j=fichaT.col+3;
+    if(j>=columnas){
+        j=columnas-1;
+    }
+    let n=fichaT.ren-3;
+    if(n<0){
+        n=0;
+    }
+    let m=fichaT.col-3;
+    if(m<0){
+        m=0;
+    }
+
+    while(i>=n && j>=m && !ganador){
+        if(fichas_Matrix[i][j].color==xColor && fichas_Matrix[i][j].color != "black"){
+            cont++;
+        }
+        else{
+            cont=0;
+        }
+        if (cont>=4){
+            ganador=1;
+        }
+        i--;
+        j--;
+    }
+    return ganador;
+
+}
+
+function verticalCheck(fichaT){
+    let ganador = 0;
+    let cont = 0 ;
+    let i=fichaT.ren+3;
+    if (i>=filas) {
+        i=filas-1;
+    }
+    while(i>=fichaT.ren && !ganador){
+        if(fichas_Matrix[i][fichaT.col].color==xColor && fichas_Matrix[i][fichaT.col].color != "black"){
+            cont++;
+        }
+        else{
+            cont=0;
+        }
+        if (cont>=4){
+            ganador=1;
+        }
+        i--;
+    }
+    return ganador;
+}
+
+function horizontalCheck(fichaT){
+     //horizontal
     let ganador = 0;
     let cont = 0;
-    //horizontal
-    let i = fichaPress.col-3;
+    let i = fichaT.col-3;//Nos movemos 3 espacios a la izquierda
     if(i < 0){
         i=0;
     }
 
-    let j = fichaPress.col+3;
+    let j = fichaT.col+3;//No movemos 3 espacios a la derecha
     if(j >= columnas){
         j = columnas-1;
     }
     
-    while(i<j && !ganador){
-        if(fichas_Matrix[fichaPress.ren][i].color==xColor && fichas_Matrix[fichaPress.ren][i].color!="black"){
+    while(i<=j && !ganador){//Evaluamos la linea  horizontal desde i hasta j
+        if(fichas_Matrix[fichaT.ren][i].color==xColor && fichas_Matrix[fichaT.ren][i].color!="black"){
             cont++;
-            console.log("Si");
-            console.log(fichas_Matrix[fichaPress.ren][i].color + "" + xColor +" SI" + fichaPress.color);
         }
         else{
             cont=0;
-            console.log(fichas_Matrix[fichaPress.ren][i].color + "" + xColor +" NO" + fichaPress.color);
         }
         if (cont>=4){
             ganador=1;
-            console.log("GANA");
         }
         i++;
     }
@@ -287,7 +411,8 @@ function changeProfileElements(){
     nJ1 = document.getElementById("nJ1");
     nJ2 = document.getElementById("nJ2");
 
-    profileColors = document.getElementsByClassName("profileColor")
+    profileColors = document.getElementsByClassName("profileColor");
+    buttons = document.getElementsByClassName("buttons");
 
     nJ1.innerHTML = localStorage.getItem("nJ1");//Asignamos nombres
     nJ2.innerHTML = localStorage.getItem("nJ2");
@@ -302,6 +427,18 @@ function changeProfileElements(){
     profileColors[0].style.color=cJ1.value;
     profileColors[1].classList.add("conectaCircleProfile");
     profileColors[1].style.color=cJ2.value;
+
+    buttons[0].onclick= function(){
+        limpia();
+        scoreP1=0;
+        scoreP2=0;
+        sJ2.innerHTML=scoreP2;
+        sJ1.innerHTML=scoreP1;
+    }
+
+    buttons[1].onclick = function(){
+        location.href='index.html';
+    }
 }
 
 
